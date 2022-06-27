@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const getTimeStamp = () => {
   const time = new Date();
   const hour = time.getHours();
@@ -33,6 +35,7 @@ const readPrevReviews = () => {
 }
 
 const guestBookHandler = (request, response) => {
+  const reviews = readPrevReviews();
   const { name, comment } = request;
   const timeStamp = getTimeStamp();
   reviews.push({ name, comment, timeStamp });

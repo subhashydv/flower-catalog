@@ -8,7 +8,8 @@ const extension = fileName => {
 const contentType = {
   txt: 'text/plain',
   html: 'text/html',
-  png: 'image/png'
+  png: 'image/png',
+  jpg: 'image/jpeg'
 };
 
 const serveFileContent = ({ uri }, response, serveFrom) => {

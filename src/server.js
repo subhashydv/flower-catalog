@@ -31,4 +31,4 @@ const startServer = (port, handlers, serveFrom) => {
 
 
 const handlers = [requestHandler];
-startServer(8000, handlers, serveFrom = './public');
+startServer(8800, handlers, serveFrom = './public');

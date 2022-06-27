@@ -36,8 +36,7 @@ const requestHandler = (request, response, serveFrom) => {
   }
 
   if (uri === '/guestbook') {
-    const reviews = readPrevReviews();
-    return showReviews(request, response, reviews);
+    return showReviews(request, response);
   }
   return false
 }

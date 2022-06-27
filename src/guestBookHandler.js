@@ -43,7 +43,8 @@ const guestBookHandler = (request, response) => {
   return true;
 };
 
-const showReviews = (request, response, reviews) => {
+const showReviews = (request, response) => {
+  const reviews = readPrevReviews();
   const html = getHtml(reviews);
   response.send(html);
   return true;

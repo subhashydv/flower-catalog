@@ -1,9 +1,9 @@
  ## TODO
 
-  - Add README
-  - Create html page 
+ - [ ]Create html page 
  
  ## DONE
 
+ - [x]Add README
  - [x] Download references
  - [x] git init

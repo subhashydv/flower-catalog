@@ -1,10 +1,5 @@
 const fs = require('fs');
 
-const extension = fileName => {
-  const indexOfDot = fileName.indexOf('.');
-  return fileName.slice(indexOfDot + 1);
-};
-
 const contentType = {
   txt: 'text/plain',
   html: 'text/html',
@@ -12,7 +7,12 @@ const contentType = {
   jpg: 'image/jpeg'
 };
 
-const serveFileContent = ({ uri }, response, serveFrom) => {
+const extension = fileName => {
+  const indexOfDot = fileName.indexOf('.');
+  return fileName.slice(indexOfDot + 1);
+};
+
+const serveFileContent = ({ uri }, response) => {
   const fileName = uri === '/' ? 'public/flowerCatalog.html' : `public/${uri}`;
 
   if (fs.existsSync(fileName)) {
@@ -47,7 +47,7 @@ const generateHtml = reviews => {
 
 const getHtml = (reviews) => {
   const content = fs.readFileSync('./public/guestbook.html', 'utf-8');
-  const table = generateHtml(reviews);
+  const table = generateHtml(reviews) || `<tr></tr>`;
   return content.replace('__BODY__', table);
 };
 
@@ -59,7 +59,7 @@ const readPrevReviews = () => {
   return JSON.parse(fs.readFileSync('reviews.json', 'utf-8'));
 }
 
-const guestBookHandler = (request, response, reviews) => {
+const guestBookHandler = (request, response) => {
   const { name, comment } = request;
   const timeStamp = getTimeStamp();
   reviews.push({ name, comment, timeStamp });
@@ -82,8 +82,7 @@ const requestHandler = (request, response, serveFrom) => {
     return serveFileContent(request, response, serveFrom);
   }
   if (uri === '/addcomment') {
-    const reviews = readPrevReviews();
-    return guestBookHandler(request, response, reviews);
+    return guestBookHandler(request, response);
   }
 
   if (uri === '/guestbook') {

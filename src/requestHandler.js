@@ -64,8 +64,9 @@ const guestBookHandler = (request, response, reviews) => {
   const timeStamp = getTimeStamp();
   reviews.push({ name, comment, timeStamp });
   storeReviews(reviews);
-  const html = getHtml(reviews);
-  response.send(html);
+  response.statusCode = 301;
+  response.setHeader('location', '/guestbook')
+  response.send('');
   return true;
 };
 
@@ -76,11 +77,11 @@ const showReviews = (request, response, reviews) => {
 };
 
 const requestHandler = (request, response, serveFrom) => {
-  const { uri, name, comment } = request;
+  const { uri } = request;
   if (uri.includes('.') || uri === '/') {
     return serveFileContent(request, response, serveFrom);
   }
-  if (uri === '/guestbook' && name && comment) {
+  if (uri === '/addcomment') {
     const reviews = readPrevReviews();
     return guestBookHandler(request, response, reviews);
   }

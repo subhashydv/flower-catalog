@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 960px;
+  margin: 0 auto;
+  font-family: sans-serif;
+  font-size: 18px;
+}
+
+h1 {
+  text-align: center;
+  padding: 1em 0 0.5em;
+  margin-bottom: 0.8em;
+  color: orange;
+}
+
+.name {
+  margin: 1em;
+}
+
+.comment {
+  border-top: 1px solid black;
+  margin: 1em;
+}
+
+.submit {
+  margin: 0.7em 0 0.4em;
+}
+
+table {
+  margin: 1em;
+}
+
+td,
+th {
+  padding: 0.5em 1em;
+}

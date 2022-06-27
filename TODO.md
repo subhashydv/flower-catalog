@@ -6,6 +6,7 @@
 
  ## DONE
 
+ - [x] Added css for guestbook
  - [x] Create database for guestBook
  - [x] Create form for guestBook
  - [x] Create html page for ableliophyllum

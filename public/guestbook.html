@@ -10,8 +10,8 @@
     <h1>&lt&lt Guest Book</h1>
     <h3>Leave a comment</h3>
   </header>
-  <form action="/guestbook" method="get">
-    <div>
+  <form action="/addcomment" method="get">
+    <div class="name">
       <label for="name">Name : </label>
       <input type="text" name="name" id="name">
     </div>
@@ -19,10 +19,10 @@
       <label for="comment">Comment : </label>
       <textarea name="comment" id="comment" cols="30" rows="7"></textarea>
     </div>
-    <div><input type="submit" value="Submit"></div>
+    <div class="submit"><input type="submit" value="Submit"></div>
   </form>
 
-  <div style="border-top: 1px solid black ;">
+  <div class="comment">
     <table>
       <thead>
         <th>Date time</th>

@@ -8,7 +8,7 @@ body {
   width: 960px;
   margin: 0 auto;
   font-family: sans-serif;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .heading {
@@ -20,9 +20,14 @@ body {
   font-size: 24px;
 }
 
-.img {
+.abeliophyllum {
   width: 400px;
   height: 500px;
+}
+
+.agerantum {
+  width: 500px;
+  height: 400px;
 }
 
 .container {

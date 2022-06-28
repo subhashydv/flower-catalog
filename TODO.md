@@ -1,6 +1,6 @@
  ## TODO
 
- - [ ] Separate files for abeliphyllum and abeliophyllum
+  - [ ] Create entity for comments
 
  ## DONE
 

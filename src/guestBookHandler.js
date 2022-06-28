@@ -22,8 +22,8 @@ const generateHtml = comments => {
   }).join('');
 };
 
-const getHtml = (comments) => {
-  const content = fs.readFileSync('./public/guestbook.html', 'utf-8');
+const getHtml = comments => {
+  const content = fs.readFileSync('./resources/templateGuestbook.html', 'utf8');
   const table = generateHtml(comments);
   return content.replace('__BODY__', table);
 };

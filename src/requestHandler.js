@@ -28,7 +28,7 @@ const serveFileContent = ({ uri }, response) => {
 
 const requestHandler = (request, response, serveFrom) => {
   const { uri } = request;
-  const commentFile = 'comment.json';
+  const commentFile = 'resources/comment.json';
 
   if (uri.includes('.') || uri === '/') {
     return serveFileContent(request, response, serveFrom);

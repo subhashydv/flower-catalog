@@ -1,9 +1,11 @@
  ## TODO
 
  - [ ] Create a common css file
+ - [ ] Separate files for abeliphyllum and abeliophyllum
 
  ## DONE
 
+ - [x] Improve styling
  - [x] Add download link for downloading pdf
  - [x] Create space parser for comments
  - [x] Handle guestbook bug from home

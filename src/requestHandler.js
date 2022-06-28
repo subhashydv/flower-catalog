@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { showReviews, registerComment } = require('./guestBookHandler.js');
+const { guestBookHandler, registerComment } = require('./guestBookHandler.js');
 
 const contentType = {
   txt: 'text/plain',
@@ -38,7 +38,7 @@ const requestHandler = (request, response, serveFrom) => {
   }
 
   if (uri === '/guestbook') {
-    return showReviews(request, response, commentFile);
+    return guestBookHandler(request, response, commentFile);
   }
   return false
 }

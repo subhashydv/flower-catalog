@@ -4,6 +4,7 @@
 
  ## DONE
 
+ - [x] Extract function from registerComment
  - [x] Pass review data file from outside
  - [x] Moved home page css file in styles dir
  - [x] Improve styling

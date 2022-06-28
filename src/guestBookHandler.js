@@ -1,5 +1,13 @@
 const fs = require('fs');
 
+const writeInJson = (reviews, fileName) => {
+  fs.writeFileSync(fileName, JSON.stringify(reviews), 'utf8');
+};
+
+const readFile = fileName => {
+  return JSON.parse(fs.readFileSync(fileName, 'utf-8'));
+};
+
 const getTimeStamp = () => {
   const time = new Date();
   const hour = time.getHours();
@@ -22,12 +30,11 @@ const getHtml = (reviews) => {
   return content.replace('__BODY__', table);
 };
 
-const writeInJson = (reviews, fileName) => {
-  fs.writeFileSync(fileName, JSON.stringify(reviews), 'utf8');
-};
-
-const readFile = fileName => {
-  return JSON.parse(fs.readFileSync(fileName, 'utf-8'));
+const redirectToGuestbook = (request, response) => {
+  response.statusCode = 302;
+  response.setHeader('location', '/guestbook')
+  response.send('');
+  return true;
 };
 
 const registerComment = (request, response, fileName) => {
@@ -36,17 +43,14 @@ const registerComment = (request, response, fileName) => {
   const timeStamp = getTimeStamp();
   reviews.push({ name, comment, timeStamp });
   writeInJson(reviews, fileName);
-  response.statusCode = 302;
-  response.setHeader('location', '/guestbook')
-  response.send('');
-  return true;
+  return redirectToGuestbook(request, response);
 };
 
-const showReviews = (request, response, fileName) => {
+const guestBookHandler = (request, response, fileName) => {
   const reviews = readFile(fileName);
   const html = getHtml(reviews);
   response.send(html);
   return true;
 };
 
-module.exports = { showReviews, registerComment };
+module.exports = { guestBookHandler, registerComment };

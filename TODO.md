@@ -1,10 +1,10 @@
  ## TODO
 
- - [ ] Create a common css file
  - [ ] Separate files for abeliphyllum and abeliophyllum
 
  ## DONE
 
+ - [x] Moved home page css file in styles dir
  - [x] Improve styling
  - [x] Add download link for downloading pdf
  - [x] Create space parser for comments

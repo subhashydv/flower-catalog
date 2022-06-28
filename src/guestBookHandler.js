@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-const writeInJson = (reviews, fileName) => {
-  fs.writeFileSync(fileName, JSON.stringify(reviews), 'utf8');
+const writeInJson = (comments, fileName) => {
+  fs.writeFileSync(fileName, JSON.stringify(comments), 'utf8');
 };
 
 const readFile = fileName => {
@@ -16,17 +16,15 @@ const getTimeStamp = () => {
   return `${date} ${hour}:${minute}`;
 };
 
-const generateHtml = reviews => {
-  return reviews.map(review => {
-    const name = review.name;
-    const comment = review.comment;
-    return `<tr><td>${review.timeStamp}</td><td>${name}</td><td>${comment}</td></tr>`;
+const generateHtml = comments => {
+  return comments.map(comment => {
+    return `<tr><td>${comment.timeStamp}</td><td>${comment.name}</td><td>${comment.comment}</td></tr>`;
   }).join('');
 };
 
-const getHtml = (reviews) => {
+const getHtml = (comments) => {
   const content = fs.readFileSync('./public/guestbook.html', 'utf-8');
-  const table = generateHtml(reviews);
+  const table = generateHtml(comments);
   return content.replace('__BODY__', table);
 };
 

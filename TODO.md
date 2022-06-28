@@ -4,6 +4,7 @@
 
  ## DONE
 
+ - [x] Add download link for downloading pdf
  - [x] Create space parser for comments
  - [x] Handle guestbook bug from home
  - [x] Move server in root

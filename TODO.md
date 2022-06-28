@@ -1,10 +1,10 @@
  ## TODO
 
  - [ ] Create a common css file
- - [ ] Create space parser for comments
 
  ## DONE
 
+ - [x] Create space parser for comments
  - [x] Handle guestbook bug from home
  - [x] Move server in root
  - [x] Create new file for add data in guestbook

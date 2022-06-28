@@ -1,12 +1,16 @@
+const parseSpace = value => {
+  return value.replaceAll('+', ' ');
+};
+
 const parseQueryParams = queryString => {
   const queryParams = {};
   const params = queryString.split('&');
   params.forEach(param => {
     const [name, value] = param.split('=');
-    queryParams[name] = value;
+    queryParams[name] = parseSpace(value);
   });
   return queryParams;
-}
+};
 
 const parseQuery = rawUri => {
   let queryParams = {};

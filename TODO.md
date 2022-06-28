@@ -1,9 +1,10 @@
  ## TODO
 
-  - [ ] Create entity for comments
+ - [ ] Create entity for comments
 
  ## DONE
 
+ - [x] Pass review data file from outside
  - [x] Moved home page css file in styles dir
  - [x] Improve styling
  - [x] Add download link for downloading pdf

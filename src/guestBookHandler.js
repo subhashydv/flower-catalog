@@ -22,31 +22,31 @@ const getHtml = (reviews) => {
   return content.replace('__BODY__', table);
 };
 
-const storeReviews = reviews => {
-  fs.writeFileSync('reviews.json', JSON.stringify(reviews), 'utf8');
+const writeInJson = (reviews, fileName) => {
+  fs.writeFileSync(fileName, JSON.stringify(reviews), 'utf8');
 };
 
-const readPrevReviews = () => {
-  return JSON.parse(fs.readFileSync('reviews.json', 'utf-8'));
-}
+const readFile = fileName => {
+  return JSON.parse(fs.readFileSync(fileName, 'utf-8'));
+};
 
-const guestBookHandler = (request, response) => {
-  const reviews = readPrevReviews();
+const registerComment = (request, response, fileName) => {
+  const reviews = readFile(fileName);
   const { name, comment } = request;
   const timeStamp = getTimeStamp();
   reviews.push({ name, comment, timeStamp });
-  storeReviews(reviews);
+  writeInJson(reviews, fileName);
   response.statusCode = 302;
   response.setHeader('location', '/guestbook')
   response.send('');
   return true;
 };
 
-const showReviews = (request, response) => {
-  const reviews = readPrevReviews();
+const showReviews = (request, response, fileName) => {
+  const reviews = readFile(fileName);
   const html = getHtml(reviews);
   response.send(html);
   return true;
 };
 
-module.exports = { showReviews, guestBookHandler };
+module.exports = { showReviews, registerComment };

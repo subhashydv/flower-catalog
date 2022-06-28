@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { showReviews, guestBookHandler } = require('./guestBookHandler.js');
+const { showReviews, registerComment } = require('./guestBookHandler.js');
 
 const contentType = {
   txt: 'text/plain',
@@ -14,9 +14,7 @@ const extension = fileName => {
 };
 
 const serveFileContent = ({ uri }, response) => {
-  console.log(uri);
   const fileName = uri === '/' ? 'public/flower-catalog.html' : `public/${uri}`;
-  console.log(fileName);
 
   if (fs.existsSync(fileName)) {
     const content = fs.readFileSync(fileName);
@@ -30,15 +28,17 @@ const serveFileContent = ({ uri }, response) => {
 
 const requestHandler = (request, response, serveFrom) => {
   const { uri } = request;
+  const commentFile = 'reviews.json';
+
   if (uri.includes('.') || uri === '/') {
     return serveFileContent(request, response, serveFrom);
   }
   if (uri === '/addcomment') {
-    return guestBookHandler(request, response);
+    return registerComment(request, response, commentFile);
   }
 
   if (uri === '/guestbook') {
-    return showReviews(request, response);
+    return showReviews(request, response, commentFile);
   }
   return false
 }

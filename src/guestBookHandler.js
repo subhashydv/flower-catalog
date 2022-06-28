@@ -8,14 +8,10 @@ const getTimeStamp = () => {
   return `${date} ${hour}:${minute}`;
 };
 
-const spaceParse = text => {
-  return text;
-}
-
 const generateHtml = reviews => {
   return reviews.map(review => {
-    const name = spaceParse(review.name);
-    const comment = spaceParse(review.comment);
+    const name = review.name;
+    const comment = review.comment;
     return `<tr><td>${review.timeStamp}</td><td>${name}</td><td>${comment}</td></tr>`;
   }).join('');
 };
@@ -40,7 +36,7 @@ const guestBookHandler = (request, response) => {
   const timeStamp = getTimeStamp();
   reviews.push({ name, comment, timeStamp });
   storeReviews(reviews);
-  response.statusCode = 301;
+  response.statusCode = 302;
   response.setHeader('location', '/guestbook')
   response.send('');
   return true;

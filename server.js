@@ -1,7 +1,7 @@
 const { createServer } = require('net');
-const { parseRequest } = require('./parser.js');
-const { requestHandler } = require('./requestHandler.js',);
-const { Response } = require('./response.js');
+const { parseRequest } = require('./src/parser.js');
+const { requestHandler } = require('./src/requestHandler.js',);
+const { Response } = require('./src/response.js');
 
 const handle = (handlers, request, response, serveFrom) => {
   for (const handler of handlers) {

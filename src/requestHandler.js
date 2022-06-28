@@ -14,7 +14,9 @@ const extension = fileName => {
 };
 
 const serveFileContent = ({ uri }, response) => {
-  const fileName = uri === '/' ? 'public/flowerCatalog.html' : `public/${uri}`;
+  console.log(uri);
+  const fileName = uri === '/' ? 'public/flower-catalog.html' : `public/${uri}`;
+  console.log(fileName);
 
   if (fs.existsSync(fileName)) {
     const content = fs.readFileSync(fileName);

@@ -1,9 +1,11 @@
  ## TODO
 
  - [ ] Create a common css file
+ - [ ] Create space parser for comments
 
  ## DONE
 
+ - [x] Move server in root
  - [x] Create new file for add data in guestbook
  - [x] Add content for ableliophyllum
  - [x] Create html page for agerantum 

@@ -1,7 +1,8 @@
 const EOL = '\r\n';
 const errMessage = {
   '200': 'ok',
-  '400': 'file not found'
+  '400': 'file not found',
+  '302': 'temporary redirect'
 };
 
 class Response {

@@ -34,11 +34,11 @@ const requestHandler = (request, response, serveFrom) => {
     return serveFileContent(request, response, serveFrom);
   }
   if (uri === '/addcomment') {
-    return registerComment(request, response, commentFile);
+    return registerComment({ ...request, commentFile }, response);
   }
 
   if (uri === '/guestbook') {
-    return guestBookHandler(request, response, commentFile);
+    return guestBookHandler({ ...request, commentFile }, response);
   }
   return false
 }

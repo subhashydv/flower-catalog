@@ -35,17 +35,17 @@ const redirectToGuestbook = (request, response) => {
   return true;
 };
 
-const registerComment = (request, response, fileName) => {
-  const reviews = readFile(fileName);
+const registerComment = (request, response) => {
+  const reviews = readFile(request.commentFile);
   const { name, comment } = request;
   const timeStamp = getTimeStamp();
   reviews.push({ name, comment, timeStamp });
-  writeInJson(reviews, fileName);
+  writeInJson(reviews, request.commentFile);
   return redirectToGuestbook(request, response);
 };
 
-const guestBookHandler = (request, response, fileName) => {
-  const reviews = readFile(fileName);
+const guestBookHandler = (request, response) => {
+  const reviews = readFile(request.commentFile);
   const html = getHtml(reviews);
   response.send(html);
   return true;

@@ -5,6 +5,7 @@
 
  ## DONE
 
+ - [x] Handle guestbook bug from home
  - [x] Move server in root
  - [x] Create new file for add data in guestbook
  - [x] Add content for ableliophyllum

@@ -18,7 +18,7 @@ const generateHtml = reviews => {
 
 const getHtml = (reviews) => {
   const content = fs.readFileSync('./public/guestbook.html', 'utf-8');
-  const table = generateHtml(reviews) || `<tr></tr>`;
+  const table = generateHtml(reviews);
   return content.replace('__BODY__', table);
 };
 

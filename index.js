@@ -1,4 +1,4 @@
-const { handlers } = require('./src/app/handler.js');
+const { handlers, handle } = require('./src/app.js');
 const { startServer } = require('./src/server/server.js');
 
-startServer(8800, handlers, serveFrom = './public');
+startServer(8800, handle(handlers));

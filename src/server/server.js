@@ -1,27 +1,19 @@
 const http = require('http');
-const { requestHandler } = require('../app/requestHandler.js');
 const { URL } = require('url');
 
 const createUrl = req => `http://${req.headers.host}${req.url}`;
 
-const handle = (request, response, handlers, serveFrom) => {
-  for (const handler of handlers) {
-    if (handler(request, response, serveFrom)) {
-      return true;
-    }
-  }
-  return false;
+const logRequest = ({ pathname }) => {
+  console.log(pathname);
 };
 
-
-const startServer = (port, handlers, serveFrom) => {
+const startServer = (port, handler) => {
   const server = http.createServer((req, res) => {
     req.url = new URL(createUrl(req));
-    handle(req, res, handlers, serveFrom);
+    logRequest(req.url);
+    handler(req, res);
   })
   server.listen(port, () => console.log(`listening on ${port} `));
 };
-
-
 
 module.exports = { startServer };

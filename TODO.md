@@ -4,6 +4,7 @@
 
  ## DONE
 
+ - [x] Add entity for guestBook
  - [x] Move to inbuilt http server
  - [x] Change dir structure
  - [x] Change filename review.json to comments.json

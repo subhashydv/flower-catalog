@@ -39,6 +39,6 @@ const errorHandler = (request, response) => {
 const logHandler = (request, response) => {
   console.log(request.method, ' : ', request.url.pathname);
   return false
-}
+};
 
 module.exports = { serveFileContent, errorHandler, logHandler };

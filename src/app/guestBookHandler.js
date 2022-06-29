@@ -1,8 +1,10 @@
 const fs = require('fs');
 
 const writeInJson = (comments, fileName = 'data/comment.json') => {
-  fs.writeFileSync(fileName, JSON.stringify(comments), 'utf8');
+  fs.writeFileSync(fileName, comments, 'utf8');
 };
+
+const readFile = fileName => fs.readFileSync(fileName, 'utf8');
 
 const getTimeStamp = () => {
   const time = new Date();
@@ -12,15 +14,9 @@ const getTimeStamp = () => {
   return `${date} ${hour}:${minute}`;
 };
 
-const generateHtml = comments => {
-  return comments.map(comment => {
-    return `<tr><td>${comment.timeStamp}</td><td>${comment.name}</td><td>${comment.comment}</td></tr>`;
-  }).join('');
-};
-
-const getHtml = comments => {
-  const content = fs.readFileSync('./resources/templateGuestbook.html', 'utf8');
-  const table = generateHtml(comments);
+const getHtml = guestBook => {
+  const content = readFile('./resources/templateGuestbook.html');
+  const table = guestBook.toHtml();
   return content.replace('__BODY__', table);
 };
 
@@ -44,8 +40,8 @@ const toGuestBookParams = req => {
 
 const registerComment = (request, response) => {
   const { guestBook } = request;
-  guestBook.push(toGuestBookParams(request));
-  writeInJson(guestBook);
+  guestBook.addComment(toGuestBookParams(request));
+  writeInJson(guestBook.toJson());
   return redirectToGuestbook(request, response);
 };
 

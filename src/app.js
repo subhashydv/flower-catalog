@@ -1,13 +1,14 @@
 const fs = require('fs');
+const { GuestBook } = require('./app/guestBook.js');
 const { guestBookHandler } = require('./app/guestBookHandler.js');
 const { serveFileContent, errorHandler, logHandler } = require('./app/staticHandler.js');
 
 const readFile = fileName => JSON.parse(fs.readFileSync(fileName), 'utf8');
-const guestBook = readFile('data/comment.json');
+const guestBook = new GuestBook(readFile('data/comment.json'));
 
 const handlers = [logHandler, guestBookHandler(guestBook), serveFileContent('public'), errorHandler];
 
-const handle = (handlers, serveFrom) => (request, response) => {
+const router = (handlers, serveFrom) => (request, response) => {
   for (const handler of handlers) {
     if (handler(request, response, serveFrom)) {
       return true;
@@ -16,4 +17,4 @@ const handle = (handlers, serveFrom) => (request, response) => {
   return false;
 };
 
-module.exports = { handlers, handle };
+module.exports = { handlers, router };

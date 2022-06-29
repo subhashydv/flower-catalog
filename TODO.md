@@ -4,6 +4,8 @@
 
  ## DONE
 
+ - [x] Move to inbuilt http server
+ - [x] Change dir structure
  - [x] Change filename review.json to comments.json
  - [x] Extract function from registerComment
  - [x] Pass review data file from outside

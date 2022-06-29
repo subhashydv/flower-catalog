@@ -31,15 +31,24 @@ const getHtml = comments => {
 const redirectToGuestbook = (request, response) => {
   response.statusCode = 302;
   response.setHeader('location', '/guestbook')
-  response.send('');
+  response.end('');
   return true;
 };
 
+const toGuestBookParams = req => {
+  const queryParams = {};
+  const entries = req.url.searchParams.entries();
+  for (const entry of entries) {
+    queryParams[entry[0]] = entry[1];
+  }
+  queryParams.timeStamp = getTimeStamp();
+
+  return queryParams;
+}
+
 const registerComment = (request, response) => {
   const reviews = readFile(request.commentFile);
-  const { name, comment } = request;
-  const timeStamp = getTimeStamp();
-  reviews.push({ name, comment, timeStamp });
+  reviews.push(toGuestBookParams(request));
   writeInJson(reviews, request.commentFile);
   return redirectToGuestbook(request, response);
 };
@@ -47,8 +56,22 @@ const registerComment = (request, response) => {
 const guestBookHandler = (request, response) => {
   const reviews = readFile(request.commentFile);
   const html = getHtml(reviews);
-  response.send(html);
+  response.end(html);
   return true;
 };
 
-module.exports = { guestBookHandler, registerComment };
+const dynamicHandler = (request, response) => {
+  const { pathname } = request.url;
+  if (pathname === '/addcomment') {
+    const commentFile = 'data/comment.json'
+    return registerComment({ ...request, commentFile }, response);
+  }
+
+  if (pathname === '/guestbook') {
+    const commentFile = 'data/comment.json'
+    return guestBookHandler({ ...request, commentFile }, response);
+  }
+  return false;
+};
+
+module.exports = { dynamicHandler };

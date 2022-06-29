@@ -5,7 +5,9 @@ const contentType = {
   txt: 'text/plain',
   html: 'text/html',
   png: 'image/png',
-  jpg: 'image/jpeg'
+  jpg: 'image/jpeg',
+  css: 'text/css',
+  gif: 'image/gif'
 };
 
 const extension = fileName => {
@@ -13,13 +15,14 @@ const extension = fileName => {
   return fileName.slice(indexOfDot + 1);
 };
 
-const serveFileContent = ({ uri }, response) => {
-  const fileName = uri === '/' ? 'public/flower-catalog.html' : `public/${uri}`;
+const serveFileContent = (req, response) => {
+  const { pathname } = req.url;
+  const fileName = pathname === '/' ? 'public/flower-catalog.html' : `public/${pathname}`;
 
   if (fs.existsSync(fileName)) {
     const content = fs.readFileSync(fileName);
     response.setHeader('content-type', contentType[extension(fileName)]);
-    response.send(content);
+    response.end(content);
     return true;
   }
 
@@ -27,18 +30,11 @@ const serveFileContent = ({ uri }, response) => {
 };
 
 const requestHandler = (request, response, serveFrom) => {
-  const { uri } = request;
-  const commentFile = 'data/comment.json';
+  const { pathname } = request.url;
 
-  if (uri.includes('.') || uri === '/') {
+  if (pathname.includes('.') || pathname === '/') {
+    console.log(pathname);
     return serveFileContent(request, response, serveFrom);
-  }
-  if (uri === '/addcomment') {
-    return registerComment({ ...request, commentFile }, response);
-  }
-
-  if (uri === '/guestbook') {
-    return guestBookHandler({ ...request, commentFile }, response);
   }
   return false
 }

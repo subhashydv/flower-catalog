@@ -1,11 +1,7 @@
 const fs = require('fs');
 
-const writeInJson = (comments, fileName) => {
+const writeInJson = (comments, fileName = 'data/comment.json') => {
   fs.writeFileSync(fileName, JSON.stringify(comments), 'utf8');
-};
-
-const readFile = fileName => {
-  return JSON.parse(fs.readFileSync(fileName, 'utf-8'));
 };
 
 const getTimeStamp = () => {
@@ -47,15 +43,14 @@ const toGuestBookParams = req => {
 }
 
 const registerComment = (request, response) => {
-  const reviews = readFile(request.commentFile);
-  reviews.push(toGuestBookParams(request));
-  writeInJson(reviews, request.commentFile);
+  const { guestBook } = request;
+  guestBook.push(toGuestBookParams(request));
+  writeInJson(guestBook);
   return redirectToGuestbook(request, response);
 };
 
 const showGuestBook = (request, response) => {
-  const reviews = readFile(request.commentFile);
-  const html = getHtml(reviews);
+  const html = getHtml(request.guestBook);
   response.end(html);
   return true;
 };
@@ -63,13 +58,11 @@ const showGuestBook = (request, response) => {
 const guestBookHandler = guestBook => (request, response) => {
   const { pathname } = request.url;
   if (pathname === '/addcomment') {
-    const commentFile = guestBook;
-    return registerComment({ ...request, commentFile }, response);
+    return registerComment({ ...request, guestBook }, response);
   }
 
   if (pathname === '/guestbook') {
-    const commentFile = guestBook;
-    return showGuestBook({ ...request, commentFile }, response);
+    return showGuestBook({ ...request, guestBook }, response);
   }
   return false;
 };

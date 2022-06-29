@@ -16,9 +16,9 @@ const extension = fileName => {
 
 const mimeType = fileName => contentType[extension(fileName)];
 
-const serveFileContent = (request, response) => {
+const serveFileContent = serveFrom => (request, response) => {
   const { pathname } = request.url;
-  const fileName = pathname === '/' ? 'public/flower-catalog.html' : `public/${pathname}`;
+  const fileName = pathname === '/' ? `${serveFrom}/flower-catalog.html` : `${serveFrom}/${pathname}`;
 
   try {
     const content = fs.readFileSync(fileName);
@@ -36,4 +36,9 @@ const errorHandler = (request, response) => {
   return true;
 };
 
-module.exports = { serveFileContent, errorHandler };
+const logHandler = (request, response) => {
+  console.log(request.url.pathname);
+  return false
+}
+
+module.exports = { serveFileContent, errorHandler, logHandler };

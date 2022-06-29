@@ -53,25 +53,25 @@ const registerComment = (request, response) => {
   return redirectToGuestbook(request, response);
 };
 
-const guestBookHandler = (request, response) => {
+const showGuestBook = (request, response) => {
   const reviews = readFile(request.commentFile);
   const html = getHtml(reviews);
   response.end(html);
   return true;
 };
 
-const dynamicHandler = (request, response) => {
+const guestBookHandler = guestBook => (request, response) => {
   const { pathname } = request.url;
   if (pathname === '/addcomment') {
-    const commentFile = 'data/comment.json'
+    const commentFile = guestBook;
     return registerComment({ ...request, commentFile }, response);
   }
 
   if (pathname === '/guestbook') {
-    const commentFile = 'data/comment.json'
-    return guestBookHandler({ ...request, commentFile }, response);
+    const commentFile = guestBook;
+    return showGuestBook({ ...request, commentFile }, response);
   }
   return false;
 };
 
-module.exports = { dynamicHandler };
+module.exports = { guestBookHandler };

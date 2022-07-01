@@ -6,61 +6,44 @@ const writeInJson = (comments, fileName = 'data/comment.json') => {
 
 const readFile = fileName => fs.readFileSync(fileName, 'utf8');
 
-const getTimeStamp = () => {
-  const time = new Date();
-  const hour = time.getHours();
-  const minute = time.getMinutes();
-  const date = time.toDateString();
-  return `${date} ${hour}:${minute}`;
-};
-
 const getHtml = guestBook => {
   const content = readFile('./resources/templateGuestbook.html');
   const table = guestBook.toHtml();
   return content.replace('__BODY__', table);
 };
 
-const redirectToGuestbook = (request, response) => {
-  response.statusCode = 302;
-  response.setHeader('location', '/guestbook')
-  response.end('');
-  return true;
+const redirectToGuestbook = (req, res) => {
+  res.statusCode = 302;
+  res.setHeader('location', '/guestbook')
+  res.end('');
+  return;
 };
 
-const toGuestBookParams = req => {
-  const queryParams = {};
-  const entries = req.url.searchParams.entries();
-  for (const entry of entries) {
-    queryParams[entry[0]] = entry[1];
-  }
-  queryParams.timeStamp = getTimeStamp();
-
-  return queryParams;
-}
-
-const registerComment = (request, response) => {
-  const { guestBook } = request;
-  guestBook.addComment(toGuestBookParams(request));
+const registerComment = (req, res, next) => {
+  const { guestBook, bodyParams, timeStamp } = req;
+  guestBook.addComment({ ...bodyParams, timeStamp });
   writeInJson(guestBook.toJson());
-  return redirectToGuestbook(request, response);
+  return redirectToGuestbook(req, res);
 };
 
-const showGuestBook = (request, response) => {
-  const html = getHtml(request.guestBook);
-  response.end(html);
-  return true;
+const showGuestBook = (req, res) => {
+  const html = getHtml(req.guestBook);
+  res.end(html);
+  return;
 };
 
-const guestBookHandler = guestBook => (request, response) => {
-  const { pathname } = request.url;
-  if (pathname === '/addcomment') {
-    return registerComment({ ...request, guestBook }, response);
+const guestBookHandler = guestBook => (req, res, next) => {
+  const { pathname } = req.url;
+  if (pathname === '/addcomment' && req.method === 'POST') {
+    req.guestBook = guestBook;
+    return registerComment(req, res, next);
   }
 
-  if (pathname === '/guestbook') {
-    return showGuestBook({ ...request, guestBook }, response);
+  if (pathname === '/guestbook' && req.method === 'GET') {
+    req.guestBook = guestBook;
+    return showGuestBook(req, res, next);
   }
-  return false;
+  next(req, res);
 };
 
 module.exports = { guestBookHandler };

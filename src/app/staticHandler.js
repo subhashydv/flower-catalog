@@ -16,29 +16,28 @@ const extension = fileName => {
 
 const mimeType = fileName => contentType[extension(fileName)];
 
-const serveFileContent = serveFrom => (request, response) => {
-  const { pathname } = request.url;
+const serveFileContent = (req, res, next) => {
+  const { pathname } = req.url;
+  const { serveFrom } = req;
+
   const fileName = pathname === '/' ? `${serveFrom}/flower-catalog.html` : `${serveFrom}/${pathname}`;
 
   try {
     const content = fs.readFileSync(fileName);
-    response.setHeader('content-type', mimeType(fileName));
-    response.end(content);
+    res.setHeader('content-type', mimeType(fileName));
+    res.end(content);
   } catch (err) {
-    return false
+    next(req, res);
   }
-  return true;
+  return;
 };
 
-const errorHandler = (request, response) => {
-  response.statusCode = 404;
-  response.end('Error 404');
-  return true;
-};
+const staticHandler = serveFrom => (req, res, next) => {
+  if (req.method === 'GET') {
+    req.serveFrom = serveFrom;
+    return serveFileContent(req, res, next);
+  }
+  next(req, res);
+}
 
-const logHandler = (request, response) => {
-  console.log(request.method, ' : ', request.url.pathname);
-  return false
-};
-
-module.exports = { serveFileContent, errorHandler, logHandler };
+module.exports = { staticHandler };

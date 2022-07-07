@@ -27,7 +27,7 @@ const serveFileContent = (req, res, next) => {
     res.setHeader('content-type', mimeType(fileName));
     res.end(content);
   } catch (err) {
-    next(req, res);
+    next();
   }
   return;
 };
@@ -37,7 +37,7 @@ const staticHandler = serveFrom => (req, res, next) => {
     req.serveFrom = serveFrom;
     return serveFileContent(req, res, next);
   }
-  next(req, res);
+  next();
 }
 
 module.exports = { staticHandler };

@@ -4,7 +4,6 @@ const bodyParams = req => {
   for (const entry of entries) {
     queryParams[entry[0]] = entry[1];
   }
-  // queryParams.timeStamp = getTimeStamp();
 
   return queryParams;
 };
@@ -16,7 +15,7 @@ const parseBodyParams = (req, res, next) => {
 
   req.on('end', () => {
     req.bodyParams = bodyParams(new URLSearchParams(data));
-    next(req, res);
+    next();
   });
 };
 

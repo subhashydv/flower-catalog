@@ -4,7 +4,7 @@ const createChain = handlers => {
     index++;
     const currentHandler = handlers[index];
     if (currentHandler) {
-      currentHandler(req, res, createNextHandler);
+      currentHandler(req, res, () => createNextHandler(req, res));
     }
   }
 

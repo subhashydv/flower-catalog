@@ -40,10 +40,16 @@ const guestBookHandler = guestBook => (req, res, next) => {
   }
 
   if (pathname === '/guestbook' && req.method === 'GET') {
+    if (!req.session) {
+      res.statusCode = 302;
+      res.setHeader('location', '/login');
+      res.end();
+      return;
+    }
     req.guestBook = guestBook;
     return showGuestBook(req, res, next);
   }
-  next(req, res);
+  next();
 };
 
 module.exports = { guestBookHandler };

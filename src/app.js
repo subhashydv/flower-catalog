@@ -8,9 +8,10 @@ const { getTimeStamp, injectCookies, parseBodyParams, injectSession, logHandler,
 
 const readFile = fileName => JSON.parse(fs.readFileSync(fileName), 'utf8');
 const guestBook = new GuestBook(readFile('data/comment.json'));
+const loginPage = fs.readFileSync('public/login.html');
 
 const sessions = {};
 
-const handlers = [getTimeStamp, logHandler, injectCookies, parseBodyParams, injectSession(sessions), loginPageHandler, loginHandler(sessions), guestBookHandler(guestBook), staticHandler('public'), logoutHandler(sessions), errorHandler];
+const handlers = [getTimeStamp, logHandler, injectCookies, parseBodyParams, injectSession(sessions), loginPageHandler(loginPage), loginHandler(sessions), guestBookHandler(guestBook), staticHandler('public'), logoutHandler(sessions), errorHandler];
 
 module.exports = { handlers };

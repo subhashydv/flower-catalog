@@ -8,20 +8,7 @@ const createSession = req => {
   return session;
 };
 
-const loginContent = `<html>
-<head>
-  <title>login</title>
-</head>
-<body>
-  <form action="login" method="post">
-    <label for="name"></label>
-    <input type="text" name="user" id="user">
-    <input type="submit" value="Login">
-  </form>
-</body>
-</html>`;
-
-const loginPageHandler = (req, res, next) => {
+const loginPageHandler = loginContent => (req, res, next) => {
   const { session, url } = req;
 
   if (url.pathname === '/login' && req.method === 'GET') {

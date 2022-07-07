@@ -8,12 +8,17 @@ const createSession = req => {
   return session;
 };
 
-const loginPageHandler = loginContent => (req, res, next) => {
+const isUserPresent = (req, userCred) => {
+  const { user } = req.bodyParams;
+  return userCred[user] ? true : false;
+};
+
+const loginPageHandler = loginPage => (req, res, next) => {
   const { session, url } = req;
 
   if (url.pathname === '/login' && req.method === 'GET') {
     if (!session) {
-      res.end(loginContent);
+      res.end(loginPage);
       return;
     }
     res.statusCode = 302;
@@ -24,10 +29,16 @@ const loginPageHandler = loginContent => (req, res, next) => {
   next();
 };
 
-const loginHandler = sessions => (req, res, next) => {
+const loginHandler = (sessions, userCred) => (req, res, next) => {
   const { pathname } = req.url;
 
   if (pathname === '/login' && req.method === 'POST') {
+    if (!isUserPresent(req, userCred)) {
+      res.statusCode = 302;
+      res.setHeader('location', '/signup');
+      res.end();
+      return;
+    }
     const session = createSession(req);
     const { id } = session;
     sessions[id] = session;

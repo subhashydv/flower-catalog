@@ -3,6 +3,23 @@
 <head>
   <title>Flower Catalog</title>
   <link rel="stylesheet" href="styles/style.css">
+  <script>
+    (function () {
+      const hideJar = jar => {
+        jar.style.visibility = 'hidden';
+        setTimeout(() => {
+          jar.style.visibility = 'visible';
+        }, 1000);
+      };
+
+      const main = () => {
+        const jar = document.getElementById('jar');
+        jar.onclick = () => hideJar(jar);
+      };
+
+      window.onload = main;
+    })();
+  </script>
 </head>
 
 <body>
@@ -17,7 +34,7 @@
           <li><a href="abeliophyllum.html">Abeliophyllum</a></li>
           <li><a href="agerantum.html">Agerantum</a></li>
         </ul>
-        <figure><img src="images/jar.gif" alt="jar"></figure>
+        <figure><img id="jar" src="images/jar.gif" alt="jar"></figure>
         <a href="guestbook">Guest Book</a>
       </div>
     </div>

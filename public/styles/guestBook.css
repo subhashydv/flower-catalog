@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  list-style: none;
 }
 
 body {
@@ -37,4 +38,13 @@ table {
 td,
 th {
   padding: 0.5em 1em;
+}
+
+.logout {
+  background-color: red;
+  color: white;
+  padding: 0.4em;
+  position: relative;
+  left: 40em;
+  top: -2em;
 }

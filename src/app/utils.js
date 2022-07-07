@@ -39,9 +39,9 @@ const injectCookies = (req, res, next) => {
 };
 
 
-const bodyParams = req => {
+const bodyParams = params => {
   const queryParams = {};
-  const entries = req.entries();
+  const entries = params.entries();
   for (const entry of entries) {
     queryParams[entry[0]] = entry[1];
   }

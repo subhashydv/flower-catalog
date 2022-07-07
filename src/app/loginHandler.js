@@ -28,12 +28,11 @@ const loginPageHandler = (req, res, next) => {
     if (!session) {
       res.end(loginContent);
       return;
-    } else {
-      res.statusCode = 302;
-      res.setHeader('location', '/guestbook');
-      res.end();
-      return;
     }
+    res.statusCode = 302;
+    res.setHeader('location', '/guestbook');
+    res.end();
+    return;
   }
   next();
 };

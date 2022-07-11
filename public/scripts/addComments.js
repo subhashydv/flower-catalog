@@ -14,21 +14,17 @@
     return trow;
   };
 
-  const createTableBody = comments => {
-    const tbody = document.createElement('tbody');
-    const table = document.querySelector('table');
-    comments.forEach(comment => tbody.append(htmlTableRow(comment)));
-    table.replaceChild(tbody, table.children[1]);
-  };
-
   const commentList = xhr => {
     const comments = JSON.parse(xhr.response);
-    createTableBody(comments);
+    const tbody = document.createElement('tbody');
+    const table = document.querySelector('table');
+
+    comments.forEach(comment => tbody.append(htmlTableRow(comment)));
+    table.replaceChild(tbody, table.children[1]);
+    return;
   };
 
-  const parseFormData = formData => {
-    return new URLSearchParams(formData);
-  };
+  const parseFormData = formData => new URLSearchParams(formData);
 
   const addComment = () => {
     const form = document.querySelector('form');
@@ -36,7 +32,13 @@
     const body = parseFormData(formData);
 
     const xhr = new XMLHttpRequest();
-    xhr.onload = event => commentList(xhr);
+    xhr.onload = event => {
+      if (xhr.status === 200) {
+        commentList(xhr)
+      } else {
+        console.log('Unable to load page');
+      }
+    };
     xhr.open('POST', '/guestbook');
     xhr.send(body);
     form.reset();

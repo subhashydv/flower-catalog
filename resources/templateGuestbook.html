@@ -3,6 +3,49 @@
 <head>
   <title>Guest Book</title>
   <link rel="stylesheet" href="styles/guestBook.css">
+  <script>
+    const htmlTableRow = row => {
+      const { timeStamp, name, comment } = row;
+      return `<tr><td>${timeStamp}</td><td>${name}</td><td>${comment}</td></tr>`;
+    };
+
+    const createTable = comments => {
+      return comments.map(htmlTableRow).join('');
+    };
+
+    const commentList = (event, xhr) => {
+      const tableBody = document.getElementById('tableBody');
+      const response = JSON.parse(xhr.response);
+      const table = createTable(response);
+      tableBody.innerHTML = table;
+    };
+
+    const parseFormData = formData => {
+      const form = [...formData.entries()];
+      const parsedData = new URLSearchParams(formData);
+      return parsedData;
+    };
+
+    const addComment = () => {
+      const form = document.querySelector('form');
+      const formData = new FormData(form);
+      const body = parseFormData(formData);
+
+      const xhr = new XMLHttpRequest();
+      xhr.onload = (event) => commentList(event, xhr);
+      xhr.open('POST', '/guestbook');
+      xhr.send(body);
+    };
+
+    const main = () => {
+      const button = document.querySelector('#submit');
+      button.onclick = addComment;
+    };
+
+    window.onload = main;
+
+  </script>
+
 </head>
 
 <body>
@@ -11,7 +54,7 @@
     <h3>Leave a comment</h3>
     <a href="http://localhost:8800/logout"><button class="logout">Logout</button></a>
   </header>
-  <form action="/addcomment" method="post">
+  <form>
     <div class="name">
       <label for="name">Name : </label>
       <input type="text" name="name" id="name">
@@ -20,7 +63,7 @@
       <label for="comment">Comment : </label>
       <textarea name="comment" id="comment" cols="30" rows="7"></textarea>
     </div>
-    <div class="submit"><input type="submit" value="Submit"></div>
+    <div class="submit"><button id="submit" type="button">Submit</button></div>
   </form>
 
   <div class="comment">
@@ -30,7 +73,7 @@
         <th>name</th>
         <th>comments</th>
       </thead>
-      <tbody>
+      <tbody id="tableBody">
         __BODY__
       </tbody>
     </table>

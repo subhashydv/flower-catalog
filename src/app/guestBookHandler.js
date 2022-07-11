@@ -21,9 +21,11 @@ const redirectToGuestbook = (req, res) => {
 
 const registerComment = (req, res, next) => {
   const { guestBook, bodyParams, timeStamp } = req;
+  console.log(bodyParams);
   guestBook.addComment({ ...bodyParams, timeStamp });
   writeInJson(guestBook.toJson());
-  return redirectToGuestbook(req, res);
+  res.end(guestBook.toJson());
+  return;
 };
 
 const showGuestBook = (req, res) => {
@@ -34,7 +36,7 @@ const showGuestBook = (req, res) => {
 
 const guestBookHandler = guestBook => (req, res, next) => {
   const { pathname } = req.url;
-  if (pathname === '/addcomment' && req.method === 'POST') {
+  if (pathname === '/guestbook' && req.method === 'POST') {
     req.guestBook = guestBook;
     return registerComment(req, res, next);
   }

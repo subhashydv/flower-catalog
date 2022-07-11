@@ -12,16 +12,8 @@ const getHtml = guestBook => {
   return content.replace('__BODY__', table);
 };
 
-const redirectToGuestbook = (req, res) => {
-  res.statusCode = 302;
-  res.setHeader('location', '/guestbook')
-  res.end('');
-  return;
-};
-
 const registerComment = (req, res, next) => {
   const { guestBook, bodyParams, timeStamp } = req;
-  console.log(bodyParams);
   guestBook.addComment({ ...bodyParams, timeStamp });
   writeInJson(guestBook.toJson());
   res.end(guestBook.toJson());

@@ -6,7 +6,8 @@ const contentType = {
   png: 'image/png',
   jpg: 'image/jpeg',
   css: 'text/css',
-  gif: 'image/gif'
+  gif: 'image/gif',
+  js: 'application/js'
 };
 
 const extension = fileName => {

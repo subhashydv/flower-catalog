@@ -3,8 +3,6 @@ const { app } = require('../src/app.js');
 
 describe('GET /', () => {
   const config = {
-    sessions: {},
-    userCred: { swap: { user: 'swapnil' } },
     publicDir: 'public',
   }
 
@@ -34,5 +32,14 @@ describe('GET /', () => {
       .expect(/Ageratum,/)
       .expect(200, done)
   });
+});
 
+describe('GET /login', () => {
+  it('Should respond with 200 on GET /login', done => {
+    const config = {};
+    request(app(config))
+      .get('/login')
+      .expect('content-type', 'text/html')
+      .expect(200, done)
+  });
 });

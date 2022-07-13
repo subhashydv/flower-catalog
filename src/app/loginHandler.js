@@ -18,6 +18,7 @@ const loginPageHandler = loginPage => (req, res, next) => {
 
   if (url.pathname === '/login' && req.method === 'GET') {
     if (!session) {
+      res.setHeader('content-type', 'text/html');
       res.end(loginPage);
       return;
     }

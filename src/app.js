@@ -9,16 +9,16 @@ const { staticHandler } = require('./app/staticHandler.js');
 const { parseUrl, getTimeStamp, injectCookies, parseBodyParams,
   injectSession, logHandler, errorHandler } = require('./app/utils.js');
 
-const app = config => {
+const app = (config, sessions = {}, userData = {}) => {
   return router([parseUrl,
     getTimeStamp,
-    logHandler,
+    logHandler(config.logger),
     injectCookies,
     parseBodyParams,
-    injectSession(config.sessions),
-    signupHandler(config.userCred),
+    injectSession(sessions),
+    signupHandler(userData),
     loginPageHandler(config.loginPage),
-    loginHandler(config.sessions, config.userCred),
+    loginHandler(sessions, userData),
     guestBookHandler(config.comments),
     staticHandler(config.publicDir),
     logoutHandler(config.sessions),

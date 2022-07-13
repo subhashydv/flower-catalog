@@ -1,4 +1,5 @@
 const { URL } = require('url');
+const identity = x => x;
 
 const getTimeStamp = (req, res, next) => {
   const time = new Date();
@@ -9,8 +10,8 @@ const getTimeStamp = (req, res, next) => {
   next();
 };
 
-const logHandler = (req, res, next) => {
-  console.log(req.method, ' : ', req.url.pathname);
+const logHandler = logger = identity => (req, res, next) => {
+  logger(req.method, ' : ', req.url.pathname);
   next();
 };
 

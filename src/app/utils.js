@@ -1,3 +1,5 @@
+const { URL } = require('url');
+
 const getTimeStamp = (req, res, next) => {
   const time = new Date();
   const hour = time.getHours();
@@ -75,4 +77,11 @@ const injectSession = (sessions) => {
   }
 };
 
-module.exports = { getTimeStamp, injectCookies, parseBodyParams, injectSession, logHandler, errorHandler };
+const createUrl = req => `http://${req.headers.host}${req.url}`;
+
+const parseUrl = (req, res, next) => {
+  req.url = new URL(createUrl(req));
+  next();
+};
+
+module.exports = { parseUrl, getTimeStamp, injectCookies, parseBodyParams, injectSession, logHandler, errorHandler };

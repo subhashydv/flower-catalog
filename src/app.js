@@ -1,4 +1,6 @@
 const fs = require('fs');
+
+const { router } = require('./server/router.js');
 const { GuestBook } = require('./app/guestBook.js');
 const { guestBookHandler } = require('./app/guestBookHandler.js');
 const { loginHandler, loginPageHandler } = require('./app/loginHandler.js');
@@ -17,4 +19,7 @@ const userCred = { swap: { user: 'swapnil' } };
 
 const handlers = [getTimeStamp, logHandler, injectCookies, parseBodyParams, injectSession(sessions), signupHandler(userCred), loginPageHandler(loginPage), loginHandler(sessions, userCred), guestBookHandler(guestBook), staticHandler('public'), logoutHandler(sessions), errorHandler];
 
-module.exports = { handlers };
+
+const app = router(handlers);
+
+module.exports = { app };

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { GuestBook } = require('./guestBook.js');
 
 const writeInJson = (comments, fileName = 'data/comment.json') => {
   fs.writeFileSync(fileName, comments, 'utf8');
@@ -12,7 +13,7 @@ const getHtml = guestBook => {
   return content.replace('__BODY__', table);
 };
 
-const registerComment = (req, res, next) => {
+const registerComment = (req, res) => {
   const { guestBook, bodyParams, timeStamp } = req;
   guestBook.addComment({ ...bodyParams, timeStamp });
   writeInJson(guestBook.toJson());
@@ -26,11 +27,13 @@ const showGuestBook = (req, res) => {
   return;
 };
 
-const guestBookHandler = guestBook => (req, res, next) => {
+const guestBookHandler = comments => (req, res, next) => {
+  const guestBook = new GuestBook(comments);
   const { pathname } = req.url;
+
   if (pathname === '/guestbook' && req.method === 'POST') {
     req.guestBook = guestBook;
-    return registerComment(req, res, next);
+    return registerComment(req, res);
   }
 
   if (pathname === '/guestbook' && req.method === 'GET') {
@@ -41,7 +44,7 @@ const guestBookHandler = guestBook => (req, res, next) => {
       return;
     }
     req.guestBook = guestBook;
-    return showGuestBook(req, res, next);
+    return showGuestBook(req, res);
   }
   next();
 };

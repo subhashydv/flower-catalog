@@ -97,6 +97,16 @@ describe('GET /guestbook', () => {
       .expect(/hello/)
       .expect(200, done)
   });
+
+  it('Should redirect to login page if user is not logged in', done => {
+    const config = {};
+
+    request(app(config))
+      .get('/guestbook')
+      .expect('content-length', '24')
+      .expect('redirected to login page')
+      .expect(302, done)
+  });
 });
 
 describe('POST /guestbook', () => {

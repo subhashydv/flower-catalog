@@ -1,9 +1,11 @@
  ## TODO
 
- - [ ] Create entity for comments
+ - [ ] Add test for app
+ - [ ] Make guestBook to read and persist comment
 
  ## DONE
 
+ - [x] Create entity for guestbook
  - [x] Add entity for guestBook
  - [x] Move to inbuilt http server
  - [x] Change dir structure

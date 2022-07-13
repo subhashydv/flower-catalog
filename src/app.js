@@ -10,6 +10,7 @@ const { parseUrl, getTimeStamp, injectCookies, parseBodyParams,
   injectSession, logHandler, errorHandler } = require('./app/utils.js');
 
 const app = (config, sessions = {}, userData = {}) => {
+  // const handleSessions = 
   return router([parseUrl,
     getTimeStamp,
     logHandler(config.logger),

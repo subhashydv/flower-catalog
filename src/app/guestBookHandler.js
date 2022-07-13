@@ -25,13 +25,13 @@ const showGuestBook = (req, res) => {
   return;
 };
 
-const guestBookHandler = config => (req, res, next) => {
-  const guestBook = new GuestBook(config.comments);
+const guestBookHandler = ({ comments, persist }) => (req, res, next) => {
+  const guestBook = new GuestBook(comments);
   const { pathname } = req.url;
 
   if (pathname === '/guestbook' && req.method === 'POST') {
     req.guestBook = guestBook;
-    req.persist = config.persist;
+    req.persist = persist;
     return registerComment(req, res);
   }
 
@@ -39,7 +39,7 @@ const guestBookHandler = config => (req, res, next) => {
     if (!req.session) {
       res.statusCode = 302;
       res.setHeader('location', '/login');
-      res.end();
+      res.end('redirected to login page');
       return;
     }
     req.guestBook = guestBook;

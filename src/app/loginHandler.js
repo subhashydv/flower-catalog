@@ -45,7 +45,7 @@ const loginHandler = (sessions, userCred) => (req, res, next) => {
     sessions[id] = session;
     res.setHeader('set-cookie', `id=${id}`);
     res.statusCode = 302;
-    res.setHeader('location', '/guestbook')
+    res.setHeader('location', '/guestbook');
     res.end();
     return;
   }

@@ -10,7 +10,7 @@ const getTimeStamp = (req, res, next) => {
   next();
 };
 
-const logHandler = logger = identity => (req, res, next) => {
+const logHandler = (logger = identity) => (req, res, next) => {
   logger(req.method, ' : ', req.url.pathname);
   next();
 };

@@ -1,3 +1,4 @@
+const fs = require('fs');
 const request = require('supertest');
 const { app } = require('../src/app.js');
 
@@ -78,5 +79,37 @@ describe('POST /login', () => {
       .send('user=vivek')
       .expect('location', '/signup')
       .expect(302, done)
+  });
+});
+
+describe('GET /guestbook', () => {
+  it('Should show the guestbook', done => {
+    const config = {
+      comments: [{ name: 'swap', comment: 'hello', timeStamp: 'Thu Jul 07 2022 10:7' }]
+    };
+    const session = { '1': { id: 1, user: 'swap' } };
+    const userData = { swap: { user: 'swap' } }
+    request(app(config, session, userData))
+      .get('/guestbook')
+      .set('cookie', ['id=1'])
+      .expect('content-type', 'text/html')
+      .expect('content-length', '1026')
+      .expect(/hello/)
+      .expect(200, done)
+  });
+});
+
+describe('POST /guestbook', () => {
+  it('Should persist new comments', done => {
+    const config = {
+      comments: [],
+      persist: x => x
+    }
+    request(app(config))
+      .post('/guestbook')
+      .send('user=swap&comment=hello')
+      .expect('content-type', 'Application/json')
+      .expect('content-length', '71')
+      .expect(200, done)
   });
 });

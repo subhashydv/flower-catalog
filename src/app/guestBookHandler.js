@@ -1,10 +1,6 @@
 const fs = require('fs');
 const { GuestBook } = require('./guestBook.js');
 
-const writeInJson = (comments, fileName = 'data/comment.json') => {
-  fs.writeFileSync(fileName, comments, 'utf8');
-};
-
 const readFile = fileName => fs.readFileSync(fileName, 'utf8');
 
 const getHtml = guestBook => {
@@ -16,23 +12,26 @@ const getHtml = guestBook => {
 const registerComment = (req, res) => {
   const { guestBook, bodyParams, timeStamp } = req;
   guestBook.addComment({ ...bodyParams, timeStamp });
-  writeInJson(guestBook.toJson());
+  req.persist(guestBook.toJson());
+  res.setHeader('content-type', 'Application/json')
   res.end(guestBook.toJson());
   return;
 };
 
 const showGuestBook = (req, res) => {
   const html = getHtml(req.guestBook);
+  res.setHeader('content-type', 'text/html');
   res.end(html);
   return;
 };
 
-const guestBookHandler = comments => (req, res, next) => {
-  const guestBook = new GuestBook(comments);
+const guestBookHandler = config => (req, res, next) => {
+  const guestBook = new GuestBook(config.comments);
   const { pathname } = req.url;
 
   if (pathname === '/guestbook' && req.method === 'POST') {
     req.guestBook = guestBook;
+    req.persist = config.persist;
     return registerComment(req, res);
   }
 

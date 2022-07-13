@@ -11,7 +11,8 @@ const config = {
   loginPage: readFile('public/login.html'),
   publicDir: 'public',
   comments: parseFile('data/comment.json'),
-  logger: console.log
+  logger: console.log,
+  persist: data => fs.writeFileSync('data/comment.json', data)
 };
 
 startServer(8800, app(config, sessions, userCred));

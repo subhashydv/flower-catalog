@@ -19,9 +19,9 @@ const app = (config, sessions = {}, userData = {}) => {
     signupHandler(userData),
     loginPageHandler(config.loginPage),
     loginHandler(sessions, userData),
-    guestBookHandler(config.comments),
+    guestBookHandler(config),
     staticHandler(config.publicDir),
-    logoutHandler(config.sessions),
+    logoutHandler(sessions),
     errorHandler]);
 };
 

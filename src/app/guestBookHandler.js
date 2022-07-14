@@ -25,27 +25,24 @@ const showGuestBook = (req, res) => {
   return;
 };
 
-const guestBookHandler = ({ comments, persist }) => (req, res, next) => {
+const addComment = ({ comments, persist }) => (req, res, next) => {
   const guestBook = new GuestBook(comments);
-  const { pathname } = req.url;
-
-  if (pathname === '/guestbook' && req.method === 'POST') {
-    req.guestBook = guestBook;
-    req.persist = persist;
-    return registerComment(req, res);
-  }
-
-  if (pathname === '/guestbook' && req.method === 'GET') {
-    if (!req.session) {
-      res.statusCode = 302;
-      res.setHeader('location', '/login');
-      res.end('redirected to login page');
-      return;
-    }
-    req.guestBook = guestBook;
-    return showGuestBook(req, res);
-  }
-  next();
+  req.guestBook = guestBook;
+  req.persist = persist;
+  return registerComment(req, res);
 };
 
-module.exports = { guestBookHandler };
+
+const guestBookHandler = ({ comments }) => (req, res, next) => {
+  if (!req.session) {
+    res.statusCode = 302;
+    res.setHeader('location', '/login');
+    res.end('redirected to login page');
+    return;
+  }
+  const guestBook = new GuestBook(comments);
+  req.guestBook = guestBook;
+  return showGuestBook(req, res);
+}
+
+module.exports = { guestBookHandler, addComment };

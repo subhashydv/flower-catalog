@@ -36,7 +36,7 @@ const loginHandler = (sessions, userCred) => (req, res, next) => {
   if (pathname === '/login' && req.method === 'POST') {
     if (!isUserPresent(req, userCred)) {
       res.statusCode = 302;
-      res.setHeader('location', '/signup');
+      res.setHeader('location', '/signup-page');
       res.end();
       return;
     }

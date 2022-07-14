@@ -14,22 +14,28 @@ const signupForm = `<html>
 
 </html>`;
 
-const signupHandler = userCred => (req, res, next) => {
-  const { pathname } = req.url;
-  if (pathname === '/signup' && req.method === 'GET') {
-    res.end(signupForm);
-    return;
-  }
 
-  if (pathname === '/signup' && req.method === 'POST') {
-    const { user } = req.bodyParams;
-    userCred[user] = req.bodyParams;
-    res.statusCode = 302;
-    res.setHeader('location', '/login');
-    res.end();
-    return;
-  }
-  next();
+const getSignupForm = (req, res, next) => {
+  res.end(signupForm);
+  return;
 };
 
-module.exports = { signupHandler };
+const signupHandler = userCred => (req, res, next) => {
+  // const { pathname } = req.url;
+  // if (pathname === '/signup' && req.method === 'GET') {
+  //   res.end(signupForm);
+  //   return;
+  // }
+
+  // if (pathname === '/signup' && req.method === 'POST') {
+  const { user } = req.bodyParams;
+  userCred[user] = req.bodyParams;
+  res.statusCode = 302;
+  res.setHeader('location', '/login');
+  res.end();
+  return;
+  // }
+  // next();
+};
+
+module.exports = { signupHandler, getSignupForm };

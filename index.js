@@ -15,4 +15,5 @@ const config = {
   persist: data => fs.writeFileSync('data/comment.json', data)
 };
 
+
 startServer(8800, app(config, sessions, userCred));

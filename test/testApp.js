@@ -1,4 +1,3 @@
-const fs = require('fs');
 const request = require('supertest');
 const { app } = require('../src/app.js');
 
@@ -8,7 +7,7 @@ describe('GET /', () => {
   }
 
   it('Should give 200 on GET /', done => {
-    request(app(config))
+    request((req, res) => app(config).handle(req, res))
       .get('/')
       .expect('content-type', 'text/html')
       .expect('content-length', '1037')
@@ -17,7 +16,7 @@ describe('GET /', () => {
   });
 
   it('Should respond with 200 on GET /abeliophyllum.html', done => {
-    request(app(config))
+    request((req, res) => app(config).handle(req, res))
       .get('/abeliophyllum.html')
       .expect('content-type', 'text/html')
       .expect('content-length', '1476')
@@ -26,7 +25,7 @@ describe('GET /', () => {
   });
 
   it('Should respond with 200 on GET /agerantum.html', done => {
-    request(app(config))
+    request((req, res) => app(config).handle(req, res))
       .get('/agerantum.html')
       .expect('content-type', 'text/html')
       .expect('content-length', '1301')
@@ -40,7 +39,7 @@ describe('GET /login', () => {
     const config = {
       publicDir: 'public'
     };
-    request(app(config))
+    request((req, res) => app(config).handle(req, res))
       .get('/login')
       .expect('content-type', 'text/html')
       .expect('')
@@ -52,7 +51,7 @@ describe('GET /login', () => {
     const sessions = { '1': { id: 1, user: 'swap' } };
     const userData = { swap: { user: 'swap' } };
 
-    request(app(config, sessions, userData))
+    request((req, res) => app(config, sessions, userData).handle(req, res))
       .get('/login')
       .set('cookie', ['id=1'])
       .expect('location', '/guestbook')
@@ -64,7 +63,7 @@ describe('POST /login', () => {
   it('Should create session and logged in', done => {
     const config = {};
     const userData = { swap: { user: 'swap' } };
-    request(app(config, {}, userData))
+    request((req, res) => app(config, {}, userData).handle(req, res))
       .post('/login')
       .send('user=swap')
       .expect('set-cookie', /id=/)
@@ -74,10 +73,10 @@ describe('POST /login', () => {
 
   it('Should redirect on signup page if session is not present', done => {
     const config = {};
-    request(app(config))
+    request((req, res) => app(config).handle(req, res))
       .post('/login')
       .send('user=vivek')
-      .expect('location', '/signup')
+      .expect('location', '/signup-page')
       .expect(302, done)
   });
 });
@@ -87,9 +86,9 @@ describe('GET /guestbook', () => {
     const config = {
       comments: [{ name: 'swap', comment: 'hello', timeStamp: 'Thu Jul 07 2022 10:7' }]
     };
-    const session = { '1': { id: 1, user: 'swap' } };
+    const sessions = { '1': { id: 1, user: 'swap' } };
     const userData = { swap: { user: 'swap' } }
-    request(app(config, session, userData))
+    request((req, res) => app(config, sessions, userData).handle(req, res))
       .get('/guestbook')
       .set('cookie', ['id=1'])
       .expect('content-type', 'text/html')
@@ -101,7 +100,7 @@ describe('GET /guestbook', () => {
   it('Should redirect to login page if user is not logged in', done => {
     const config = {};
 
-    request(app(config))
+    request((req, res) => app(config).handle(req, res))
       .get('/guestbook')
       .expect('content-length', '24')
       .expect('redirected to login page')
@@ -115,7 +114,7 @@ describe('POST /guestbook', () => {
       comments: [],
       persist: x => x
     }
-    request(app(config))
+    request((req, res) => app(config).handle(req, res))
       .post('/guestbook')
       .send('user=swap&comment=hello')
       .expect('content-type', 'Application/json')

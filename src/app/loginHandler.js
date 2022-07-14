@@ -1,51 +1,46 @@
 const createSession = req => {
   const session = {};
-  const { bodyParams } = req;
+  const { user } = req.body;
   const time = new Date();
   session.id = time.getTime();
-  session.user = bodyParams.user;
+  session.user = user;
   session.time = time;
   return session;
 };
 
 const isUserPresent = (req, userCred) => {
-  const { user } = req.bodyParams;
+  const { user } = req.body;
   return userCred[user] ? true : false;
 };
 
 const loginPageHandler = loginPage => (req, res, next) => {
   const { session, url } = req;
 
-  if (url.pathname === '/login' && req.method === 'GET') {
+  if (url === '/login') {
     if (!session) {
       res.setHeader('content-type', 'text/html');
       res.end(loginPage);
       return;
     }
-    res.statusCode = 302;
-    res.setHeader('location', '/guestbook');
+    res.redirect('/guestbook');
     res.end();
     return;
   }
-  next();
+  // next();
 };
 
 const loginHandler = (sessions, userCred) => (req, res, next) => {
-  const { pathname } = req.url;
-
-  if (pathname === '/login' && req.method === 'POST') {
+  if (req.url === '/login') {
     if (!isUserPresent(req, userCred)) {
-      res.statusCode = 302;
-      res.setHeader('location', '/signup-page');
+      res.redirect('/signup-page');
       res.end();
       return;
     }
     const session = createSession(req);
     const { id } = session;
     sessions[id] = session;
-    res.setHeader('set-cookie', `id=${id}`);
-    res.statusCode = 302;
-    res.setHeader('location', '/guestbook');
+    res.cookie('id', id);
+    res.redirect('/guestbook');
     res.end();
     return;
   }

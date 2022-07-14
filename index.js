@@ -1,6 +1,6 @@
 const fs = require('fs');
-const { app } = require('./src/app.js');
-const { startServer } = require('./src/server/server.js');
+const { createApp } = require('./src/app.js');
+// const { startServer } = require('./src/server/server.js');
 
 const readFile = fileName => fs.readFileSync(fileName);
 const parseFile = fileName => JSON.parse(readFile(fileName), 'utf8');
@@ -15,5 +15,9 @@ const config = {
   persist: data => fs.writeFileSync('data/comment.json', data)
 };
 
+const app = createApp(config, sessions, userCred)
 
-startServer(8800, app(config, sessions, userCred));
+app.listen(8800, () => {
+  console.log('listening on 8800');
+});
+// startServer(8800, app(config, sessions, userCred));

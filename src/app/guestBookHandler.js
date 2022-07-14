@@ -10,10 +10,10 @@ const getHtml = guestBook => {
 };
 
 const registerComment = (req, res) => {
-  const { guestBook, bodyParams, timeStamp } = req;
-  guestBook.addComment({ ...bodyParams, timeStamp });
+  const { guestBook, body, timeStamp } = req;
+  guestBook.addComment({ ...body, timeStamp });
   req.persist(guestBook.toJson());
-  res.setHeader('content-type', 'Application/json')
+  res.setHeader('content-type', 'Application/json');
   res.end(guestBook.toJson());
   return;
 };

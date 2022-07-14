@@ -21,21 +21,11 @@ const getSignupForm = (req, res, next) => {
 };
 
 const signupHandler = userCred => (req, res, next) => {
-  // const { pathname } = req.url;
-  // if (pathname === '/signup' && req.method === 'GET') {
-  //   res.end(signupForm);
-  //   return;
-  // }
-
-  // if (pathname === '/signup' && req.method === 'POST') {
-  const { user } = req.bodyParams;
-  userCred[user] = req.bodyParams;
-  res.statusCode = 302;
-  res.setHeader('location', '/login');
+  const { user } = req.body;
+  userCred[user] = req.body;
+  res.redirect('/login');
   res.end();
   return;
-  // }
-  // next();
 };
 
 module.exports = { signupHandler, getSignupForm };

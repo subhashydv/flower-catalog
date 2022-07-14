@@ -1,40 +1,41 @@
+const express = require('express');
+
+
 const { guestBookHandler, addComment } = require('./app/guestBookHandler.js');
 const { loginHandler, loginPageHandler } = require('./app/loginHandler.js');
 const { logoutHandler } = require('./app/logoutHandler.js');
 
 const { signupHandler, getSignupForm } = require('./app/signupHandler.js');
-const { staticHandler } = require('./app/staticHandler.js');
-const { parseUrl, getTimeStamp, injectCookies, parseBodyParams,
-  injectSession, logHandler, errorHandler } = require('./app/utils.js');
-const { Router } = require('./server/router.js');
+const { getTimeStamp, injectCookies, injectSession, logHandler } = require('./app/utils.js');
 
 
-const app = (config, sessions = {}, userData = {}) => {
+const createApp = (config, sessions = {}, userData = {}) => {
+  const app = express();
   const handleSessions = injectSession(sessions);
-  const handleLog = logHandler(config.logger);
+  // console.log('main', sessions);
 
-  const router = new Router();
-  router.addMiddleWare(parseUrl);
-  router.addMiddleWare(handleLog);
-  router.addMiddleWare(getTimeStamp);
-  router.addMiddleWare(injectCookies);
-  router.addMiddleWare(parseBodyParams);
-  router.addMiddleWare(handleSessions);
+  app.use(logHandler(config.logger));
+  app.use(getTimeStamp);
+  app.use(injectCookies);
+  app.use(handleSessions);
+  app.use(express.urlencoded({ extended: true }))
 
-  router.get('/signup-page', getSignupForm);
-  router.post('/signup', signupHandler(userData));
+  app.get('/signup-page', getSignupForm);
+  app.post('/signup', signupHandler(userData));
 
-  router.get('/login', loginPageHandler(config.loginPage));
-  router.post('/login', loginHandler(sessions, userData));
-  router.get('/guestbook', guestBookHandler(config));
-  router.post('/guestbook', addComment(config));
+  app.get('/login', loginPageHandler(config.loginPage));
+  app.post('/login', loginHandler(sessions, userData));
 
-  router.get('/logout', logoutHandler(sessions));
+  app.get('/guestbook', guestBookHandler(config));
+  app.post('/guestbook', addComment(config));
 
-  router.default(staticHandler(config.publicDir));
-  router.default(errorHandler)
+  app.get('/logout', logoutHandler(sessions));
 
-  return router;
+  // app.use(staticHandler(config.publicDir));
+  app.use(express.static(config.publicDir));
+  // app.use(errorHandler)
+
+  return app;
 };
 
-module.exports = { app };
+module.exports = { createApp };

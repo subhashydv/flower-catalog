@@ -1,9 +1,5 @@
 const logoutHandler = sessions => (req, res, next) => {
-  const { url, session } = req;
-  if (url !== '/logout') {
-    next();
-    return;
-  }
+  const { session } = req;
 
   if (!session) {
     res.statusCode = 400;

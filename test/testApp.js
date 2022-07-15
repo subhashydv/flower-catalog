@@ -57,7 +57,7 @@ describe('GET /login', () => {
     request(createApp(config, sessions, userData))
       .get('/login')
       .set('cookie', ['id=1'])
-      // .expect('location', '/guestbook')
+      .expect('location', '/guestbook')
       .expect(302, done)
   });
 });
@@ -126,5 +126,31 @@ describe('POST /guestbook', () => {
       .expect('content-length', /7[01]/)
       .expect(/{"user":"swap","comment":"hello","timeStamp":/)
       .expect(200, done)
+  });
+});
+
+describe('GET /logout', () => {
+  it('Should logout the user', done => {
+    const config = {
+      publicDir: 'public'
+    }
+    const sessions = { '1': { id: 1, user: 'swap' } };
+    const userData = { swap: { user: 'swap' } }
+    request(createApp(config, sessions, userData))
+      .get('/logout')
+      .set('cookie', ['id=1'])
+      .expect('set-cookie', /id=; Path=.*Expires=/)
+      .expect('location', '/')
+      .expect(302, done)
+  });
+
+  it('Should give 400 if session is not present', done => {
+    const config = {
+      publicDir: 'public'
+    }
+    request(createApp(config))
+      .get('/logout')
+      .expect('Bad request')
+      .expect(400, done)
   });
 });

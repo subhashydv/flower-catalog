@@ -1,12 +1,12 @@
 const fs = require('fs');
 const { createApp } = require('./src/app.js');
-// const { startServer } = require('./src/server/server.js');
 
 const readFile = fileName => fs.readFileSync(fileName);
 const parseFile = fileName => JSON.parse(readFile(fileName), 'utf8');
 
 const sessions = {};
 const userCred = { swap: { user: 'swapnil' } };
+
 const config = {
   loginPage: readFile('public/login.html'),
   publicDir: 'public',
@@ -15,9 +15,8 @@ const config = {
   persist: data => fs.writeFileSync('data/comment.json', data)
 };
 
-const app = createApp(config, sessions, userCred)
+const app = createApp(config, sessions, userCred);
 
 app.listen(8800, () => {
   console.log('listening on 8800');
 });
-// startServer(8800, app(config, sessions, userCred));

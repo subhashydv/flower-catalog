@@ -13,15 +13,13 @@ const registerComment = (req, res) => {
   const { guestBook, body, timeStamp } = req;
   guestBook.addComment({ ...body, timeStamp });
   req.persist(guestBook.toJson());
-  res.setHeader('content-type', 'Application/json');
-  res.end(guestBook.toJson());
+  res.set('content-type', 'Application/json').end(guestBook.toJson());
   return;
 };
 
 const showGuestBook = (req, res) => {
   const html = getHtml(req.guestBook);
-  res.setHeader('content-type', 'text/html');
-  res.end(html);
+  res.set('content-type', 'text/html').end(html);
   return;
 };
 
@@ -36,8 +34,7 @@ const addComment = ({ comments, persist }) => (req, res, next) => {
 const guestBookHandler = ({ comments }) => (req, res, next) => {
   if (!req.session) {
     res.statusCode = 302;
-    res.setHeader('location', '/login');
-    res.end('redirected to login page');
+    res.redirect('/login');
     return;
   }
   const guestBook = new GuestBook(comments);

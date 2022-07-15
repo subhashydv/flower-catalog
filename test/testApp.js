@@ -1,3 +1,4 @@
+const assert = require('assert');
 const request = require('supertest');
 const { createApp } = require('../src/app.js');
 
@@ -44,7 +45,7 @@ describe('GET /login', () => {
     };
     request(createApp(config))
       .get('/login')
-      .expect('content-type', 'text/html')
+      .expect('content-type', /html/)
       .expect('')
       .expect(200, done)
   });
@@ -95,7 +96,7 @@ describe('GET /guestbook', () => {
     request(createApp(config, sessions, userData))
       .get('/guestbook')
       .set('cookie', ['id=1'])
-      .expect('content-type', 'text/html')
+      .expect('content-type', /html/)
       .expect('content-length', '1026')
       .expect(/hello/)
       .expect(200, done)
@@ -106,8 +107,6 @@ describe('GET /guestbook', () => {
 
     request(createApp(config))
       .get('/guestbook')
-      .expect('content-length', '24')
-      .expect('redirected to login page')
       .expect(302, done)
   });
 });
@@ -147,10 +146,40 @@ describe('GET /logout', () => {
   it('Should give 400 if session is not present', done => {
     const config = {
       publicDir: 'public'
-    }
+    };
     request(createApp(config))
       .get('/logout')
       .expect('Bad request')
       .expect(400, done)
+  });
+});
+
+describe('GET /signup-page', () => {
+  it('Should return signup-page', done => {
+    const config = {
+      publicDir: 'public'
+    };
+    request(createApp(config))
+      .get('/signup-page')
+      .expect('content-length', '276')
+      .expect(/action="signup"/)
+      .expect(200, done)
+  });
+});
+
+describe('POST /signup', () => {
+  it('Should register new user', done => {
+    const config = {
+      publicDir: 'public'
+    };
+    const userData = {};
+    request(createApp(config, {}, userData))
+      .post('/signup')
+      .send('user=vivek')
+      .expect(302)
+      .end((err, res) => {
+        assert.deepStrictEqual(userData, { vivek: { user: 'vivek' } })
+        done()
+      })
   });
 });

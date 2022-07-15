@@ -1,4 +1,3 @@
-const { URL } = require('url');
 const identity = x => x;
 
 const getTimeStamp = (req, res, next) => {
@@ -16,9 +15,8 @@ const logHandler = (logger = identity) => (req, res, next) => {
 };
 
 const errorHandler = (req, res) => {
-  res.statusCode = 404;
-  res.end('Error 404');
-  return true;
+  res.status(404).end('Error 404');
+  return;
 };
 
 const parseCookies = cookiesString => {
@@ -57,7 +55,5 @@ const injectSession = (sessions) => {
     next();
   }
 };
-
-const createUrl = req => `http://${req.headers.host}${req.url}`;
 
 module.exports = { getTimeStamp, injectCookies, injectSession, logHandler, errorHandler };

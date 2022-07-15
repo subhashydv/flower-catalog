@@ -24,7 +24,6 @@ const signupHandler = userCred => (req, res, next) => {
   const { user } = req.body;
   userCred[user] = req.body;
   res.redirect('/login');
-  res.end();
   return;
 };
 

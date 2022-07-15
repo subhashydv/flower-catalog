@@ -18,30 +18,24 @@ const loginPageHandler = loginPage => (req, res, next) => {
 
   if (url === '/login') {
     if (!session) {
-      res.setHeader('content-type', 'text/html');
-      res.end(loginPage);
+      res.set('content-type', 'text/html').end(loginPage);
       return;
     }
     res.redirect('/guestbook');
-    res.end();
     return;
   }
-  // next();
 };
 
 const loginHandler = (sessions, userCred) => (req, res, next) => {
   if (req.url === '/login') {
     if (!isUserPresent(req, userCred)) {
       res.redirect('/signup-page');
-      res.end();
       return;
     }
     const session = createSession(req);
     const { id } = session;
     sessions[id] = session;
-    res.cookie('id', id);
-    res.redirect('/guestbook');
-    res.end();
+    res.cookie('id', id).redirect('/guestbook');
     return;
   }
 

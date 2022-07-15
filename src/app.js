@@ -9,9 +9,10 @@ const { getTimeStamp, injectCookies, injectSession, logHandler, errorHandler } =
 
 const createApp = (config, sessions = {}, userData = {}) => {
   const app = express();
+  const logger = logHandler(config.logger);
   const handleSessions = injectSession(sessions);
 
-  app.use(logHandler(config.logger));
+  app.use(logger);
   app.use(getTimeStamp);
   app.use(injectCookies);
   app.use(handleSessions);

@@ -5,7 +5,6 @@ const logoutHandler = sessions => (req, res, next) => {
     return;
   }
 
-  console.log(session);
   if (!session) {
     res.statusCode = 400;
     res.end('Bad request');

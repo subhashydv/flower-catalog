@@ -123,7 +123,8 @@ describe('POST /guestbook', () => {
       .post('/guestbook')
       .send('user=swap&comment=hello')
       .expect('content-type', 'Application/json')
-      .expect('content-length', '71')
+      .expect('content-length', /7[01]/)
+      .expect(/{"user":"swap","comment":"hello","timeStamp":/)
       .expect(200, done)
   });
 });

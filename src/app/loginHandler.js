@@ -14,32 +14,25 @@ const isUserPresent = (req, userCred) => {
 };
 
 const loginPageHandler = loginPage => (req, res, next) => {
-  const { session, url } = req;
-
-  if (url === '/login') {
-    if (!session) {
-      res.set('content-type', 'text/html').end(loginPage);
-      return;
-    }
-    res.redirect('/guestbook');
+  const { session } = req;
+  if (!session) {
+    res.set('content-type', 'text/html').end(loginPage);
     return;
   }
+  res.redirect('/guestbook');
+  return;
 };
 
 const loginHandler = (sessions, userCred) => (req, res, next) => {
-  if (req.url === '/login') {
-    if (!isUserPresent(req, userCred)) {
-      res.redirect('/signup-page');
-      return;
-    }
-    const session = createSession(req);
-    const { id } = session;
-    sessions[id] = session;
-    res.cookie('id', id).redirect('/guestbook');
+  if (!isUserPresent(req, userCred)) {
+    res.redirect('/signup');
     return;
   }
-
-  next();
+  const session = createSession(req);
+  const { id } = session;
+  sessions[id] = session;
+  res.cookie('id', id).redirect('/guestbook');
+  return;
 };
 
 module.exports = { loginHandler, loginPageHandler };

@@ -80,7 +80,7 @@ describe('POST /login', () => {
     request(createApp(config))
       .post('/login')
       .send('user=vivek')
-      .expect('location', '/signup-page')
+      .expect('location', '/signup')
       .expect(302, done)
   });
 });
@@ -154,13 +154,13 @@ describe('GET /logout', () => {
   });
 });
 
-describe('GET /signup-page', () => {
+describe('GET /signup', () => {
   it('Should return signup-page', done => {
     const config = {
       publicDir: 'public'
     };
     request(createApp(config))
-      .get('/signup-page')
+      .get('/signup')
       .expect('content-length', '276')
       .expect(/action="signup"/)
       .expect(200, done)
